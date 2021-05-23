@@ -1,0 +1,29 @@
+version: "3"
+services:
+  postgres:
+    container_name: postgres
+    image: postgres
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'password'
+    ports:
+      - 5432:5432
+    networks:
+      - lsr
+    volumes:
+      - postgres:/data/postgres
+
+networks:
+  lsr:
+    external:
+      name: lsr
+
+volumes:
+  postgres:
+    external:
+      name: postgres
+      
+      
+#fly --target ps login --concourse-url http://localhost:8080
+#fly -t ps login -n main -c http://localhost:8080
+#fly -t ps login --concourse-url=http://localhost:8080 --insecure --username=test --password="test"

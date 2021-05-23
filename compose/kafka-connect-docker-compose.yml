@@ -1,0 +1,117 @@
+version: "3"
+services:
+  mysql:
+    container_name: mysql
+    image: mysql:5.7.26
+    command: --lower_case_table_names=1
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: globomantics
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: globomantics
+    ports:
+      - 3306:3306
+    networks:
+      - lsr
+    volumes:
+      - mysql:/var/lib/mysql
+      - /c/docker-volume/jda/mysql/mysql.cnf:/etc/mysql/conf.d/mysql.cnf
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper
+    container_name: zookeeper
+    ports:
+      - 2181:2181
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_SYNC_LIMIT: 2
+    networks:
+      - lsr
+  
+  kafka:
+    image: confluentinc/cp-kafka
+    container_name: kafka
+    networks:
+      - lsr
+    ports:
+      - 9092:9092
+      - 29092:29092
+    environment:
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092, PLAINTEXT_HOST://localhost:9092
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_BROKER_ID: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+      
+  debezium-connect:
+    image: debezium/connect:060620
+    container_name: debezium-connect
+    networks:
+      - lsr
+    ports:
+      - 8083:8083
+    environment:
+      GROUP_ID: 1
+      CONFIG_STORAGE_TOPIC: kafka_connect_configs
+      OFFSET_STORAGE_TOPIC: kafka_connect_offsets
+      STATUS_STORAGE_TOPIC: kafka_connect_statuses
+      BOOTSTRAP_SERVERS: kafka:29092
+    depends_on:
+      - kafka
+      
+  elasticsearch-connect:
+    image: debezium/connect:060620
+    container_name: elasticsearch-connect
+    networks:
+      - lsr
+    ports:
+      - 8084:8083
+    #command: sh -c "ls -ltrh /kakfa/connect/elasticsearch"
+    #volumes:
+      #- /c/docker-volume/jda/kafka-connect/confluentinc-kafka-connect-elasticsearch-5.5.0/lib:/kakfa/connect/elasticsearch/
+    environment:
+      GROUP_ID: 1
+      CONFIG_STORAGE_TOPIC: kafka_connect_configs
+      OFFSET_STORAGE_TOPIC: kafka_connect_offsets
+      STATUS_STORAGE_TOPIC: kafka_connect_statuses
+      BOOTSTRAP_SERVERS: kafka:29092
+    depends_on:
+      - kafka
+      
+  elasticsearch-connect-2:
+    image: debezium/connect:060620
+    container_name: elasticsearch-connect-2
+    networks:
+      - lsr
+    environment:
+      GROUP_ID: 1
+      CONFIG_STORAGE_TOPIC: kafka_connect_configs
+      OFFSET_STORAGE_TOPIC: kafka_connect_offsets
+      STATUS_STORAGE_TOPIC: kafka_connect_statuses
+      BOOTSTRAP_SERVERS: kafka:29092
+    depends_on:
+      - kafka
+      
+  elasticsearch:
+    container_name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.3.2
+    environment:
+      ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+    ports:
+      - 9200:9200
+      - 9300:9300
+    networks:
+      - lsr
+      
+networks:
+  lsr:
+    external:
+      name: lsr
+
+volumes:
+  mysql:
+    external:
+      name: mysql-kafka

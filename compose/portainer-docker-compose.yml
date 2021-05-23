@@ -1,0 +1,22 @@
+version: '3'
+services:
+  portainer:
+    image: portainer/portainer
+    container_name: portainer
+    command: -H tcp://docker.for.win.localhost:2375
+    ports:
+      - "9000:9000"
+    volumes:
+      - portainer:/data
+    networks:
+      - lsr
+
+networks:
+  lsr:
+    external:
+      name: lsr
+
+volumes:
+  portainer:
+    external:
+      name: portainer

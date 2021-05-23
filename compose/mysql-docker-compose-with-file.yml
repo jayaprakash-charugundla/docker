@@ -1,0 +1,19 @@
+version: "3"
+services:
+  mysql:
+    container_name: mysql
+    image: mysql:5.7.26
+    command: --lower_case_table_names=1
+    environment:
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - 3306:3306
+    networks:
+      - lsr
+    volumes:
+      - /c/Users/1025690/OneDrive/Docker/volume/mysql:/var/lib/mysql
+
+networks:
+  lsr:
+    external:
+      name: lsr

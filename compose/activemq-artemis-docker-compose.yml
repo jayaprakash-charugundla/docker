@@ -1,0 +1,18 @@
+version: "3"
+services:
+  activemq-artemis:
+    container_name: activemq-artemis
+    image: vromero/activemq-artemis:latest
+    environment:
+      ARTEMIS_USERNAME: 'activemq-artemis'
+      ARTEMIS_PASSWORD: 'password'
+    ports:
+      - 8161:8161
+      - 61616:61616
+    networks:
+      - lsr
+
+networks:
+  lsr:
+    external:
+      name: lsr

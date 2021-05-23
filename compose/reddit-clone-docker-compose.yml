@@ -1,0 +1,35 @@
+version: "3"
+services:
+  reddit-clone-service:
+    container_name: reddit-clone-service
+    image: reddit-clone-service:1.0.0
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/reddit
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: password
+    ports:
+      - 8080:8080
+    networks:
+      - lsr
+  mysql:
+    container_name: mysql
+    image: mysql:5.7.26
+    command: --lower_case_table_names=1
+    environment:
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - 3306:3306
+    networks:
+      - lsr
+    volumes:
+      - mysql:/var/lib/mysql
+
+networks:
+  lsr:
+    external:
+      name: lsr
+
+volumes:
+  mysql:
+    external:
+      name: mysql
