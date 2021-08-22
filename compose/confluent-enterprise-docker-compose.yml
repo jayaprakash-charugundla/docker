@@ -9,13 +9,13 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
     networks:
-      - lsr
+      - jc
   
   kafka:
     image: confluentinc/cp-enterprise-kafka
     container_name: kafka
     networks:
-      - lsr
+      - jc
     ports:
       - 9092:9092
     environment:
@@ -37,7 +37,7 @@ services:
     image: confluentinc/cp-enterprise-control-center
     container_name: control-center
     networks:
-      - lsr
+      - jc
     ports:
       - 9021:9021
     depends_on:
@@ -53,6 +53,6 @@ services:
       PORT: 9021
 
 networks:
-  lsr:
+  jc:
     external:
-      name: lsr
+      name: jc

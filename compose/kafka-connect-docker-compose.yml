@@ -12,7 +12,7 @@ services:
     ports:
       - 3306:3306
     networks:
-      - lsr
+      - jc
     volumes:
       - mysql:/var/lib/mysql
       - /c/docker-volume/jda/mysql/mysql.cnf:/etc/mysql/conf.d/mysql.cnf
@@ -27,13 +27,13 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
       ZOOKEEPER_SYNC_LIMIT: 2
     networks:
-      - lsr
+      - jc
   
   kafka:
     image: confluentinc/cp-kafka
     container_name: kafka
     networks:
-      - lsr
+      - jc
     ports:
       - 9092:9092
       - 29092:29092
@@ -50,7 +50,7 @@ services:
     image: debezium/connect:060620
     container_name: debezium-connect
     networks:
-      - lsr
+      - jc
     ports:
       - 8083:8083
     environment:
@@ -66,7 +66,7 @@ services:
     image: debezium/connect:060620
     container_name: elasticsearch-connect
     networks:
-      - lsr
+      - jc
     ports:
       - 8084:8083
     #command: sh -c "ls -ltrh /kakfa/connect/elasticsearch"
@@ -85,7 +85,7 @@ services:
     image: debezium/connect:060620
     container_name: elasticsearch-connect-2
     networks:
-      - lsr
+      - jc
     environment:
       GROUP_ID: 1
       CONFIG_STORAGE_TOPIC: kafka_connect_configs
@@ -104,12 +104,12 @@ services:
       - 9200:9200
       - 9300:9300
     networks:
-      - lsr
+      - jc
       
 networks:
-  lsr:
+  jc:
     external:
-      name: lsr
+      name: jc
 
 volumes:
   mysql:

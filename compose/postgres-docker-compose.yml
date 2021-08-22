@@ -9,14 +9,14 @@ services:
     ports:
       - 5432:5432
     networks:
-      - lsr
+      - jc
     volumes:
       - postgres:/data/postgres
 
 networks:
-  lsr:
+  jc:
     external:
-      name: lsr
+      name: jc
 
 volumes:
   postgres:

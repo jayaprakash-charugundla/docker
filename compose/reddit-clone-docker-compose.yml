@@ -10,7 +10,7 @@ services:
     ports:
       - 8080:8080
     networks:
-      - lsr
+      - jc
   mysql:
     container_name: mysql
     image: mysql:5.7.26
@@ -20,14 +20,14 @@ services:
     ports:
       - 3306:3306
     networks:
-      - lsr
+      - jc
     volumes:
       - mysql:/var/lib/mysql
 
 networks:
-  lsr:
+  jc:
     external:
-      name: lsr
+      name: jc
 
 volumes:
   mysql:

@@ -9,14 +9,14 @@ services:
     ports:
       - 3306:3306
     networks:
-      - lsr
+      - jc
     volumes:
       - mysql:/var/lib/mysql
 
 networks:
-  lsr:
+  jc:
     external:
-      name: lsr
+      name: jc
 
 volumes:
   mysql:

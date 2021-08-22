@@ -1,0 +1,24 @@
+version: "3.8"
+services:
+  web:
+    image: 'gitlab/gitlab-ce:latest'
+    restart: always
+    hostname: 'gitlab.example.com'
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'https://gitlab.example.com'
+    ports:
+      - '80:80'
+      - '443:443'
+      - '22:22'
+    volumes:
+      - '/d/Workspace/Devops/volume/gitlab/config:/etc/gitlab'
+      - '/d/Workspace/Devops/volume/gitlab/logs:/var/log/gitlab'
+      - '/d/Workspace/Devops/volume/gitlab/data:/var/opt/gitlab'
+    networks:
+      - jc
+
+networks:
+  jc:
+    external:
+      name: jc

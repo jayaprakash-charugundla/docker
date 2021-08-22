@@ -10,13 +10,13 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
       ZOOKEEPER_SYNC_LIMIT: 2
     networks:
-      - lsr
+      - jc
   
   kafka1:
     image: confluentinc/cp-kafka
     container_name: kafka1
     networks:
-      - lsr
+      - jc
     ports:
       - 9092:9092
       - 29092:29092
@@ -33,7 +33,7 @@ services:
     image: confluentinc/cp-kafka
     container_name: kafka2
     networks:
-      - lsr
+      - jc
     ports:
       - 9093:9093
       - 29093:29093
@@ -47,6 +47,6 @@ services:
       - zookeeper
 
 networks:
-  lsr:
+  jc:
     external:
-      name: lsr
+      name: jc

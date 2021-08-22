@@ -9,12 +9,12 @@ services:
     volumes:
       - portainer:/data
     networks:
-      - lsr
+      - jc
 
 networks:
-  lsr:
+  jc:
     external:
-      name: lsr
+      name: jc
 
 volumes:
   portainer:

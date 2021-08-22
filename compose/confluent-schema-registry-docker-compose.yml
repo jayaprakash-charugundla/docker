@@ -10,13 +10,13 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
       ZOOKEEPER_SYNC_LIMIT: 2
     networks:
-      - lsr
+      - jc
   
   kafka:
     image: confluentinc/cp-kafka:5.5.1
     container_name: kafka
     networks:
-      - lsr
+      - jc
     ports:
       - 9092:9092
       - 29092:29092
@@ -33,7 +33,7 @@ services:
     image: confluentinc/cp-schema-registry:5.5.1
     container_name: schema-registry
     networks:
-      - lsr
+      - jc
     ports:
       - 8081:8081
     environment:
@@ -45,6 +45,6 @@ services:
       - kafka
 
 networks:
-  lsr:
+  jc:
     external:
-      name: lsr
+      name: jc

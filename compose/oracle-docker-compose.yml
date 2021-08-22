@@ -7,7 +7,7 @@ services:
       - 1521:1521
       - 5500:5500
     networks:
-      - lsr
+      - jc
       
   weblogic:
     image: store/oracle/weblogic:12.2.1.4-191221
@@ -16,11 +16,11 @@ services:
       - 7001:7001
       - 9002:9002
     networks:
-      - lsr
+      - jc
     volumes:
       - /c/docker-volume/jda/oracle:/u01/oracle/properties
 
 networks:
-  lsr:
+  jc:
     external:
-      name: lsr
+      name: jc

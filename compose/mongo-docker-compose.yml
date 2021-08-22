@@ -6,14 +6,14 @@ services:
     ports:
       - 27017:27017
     networks:
-      - lsr
+      - jc
     volumes:
       - mongo:/var/lib/mongodb
 
 networks:
-  lsr:
+  jc:
     external:
-      name: lsr
+      name: jc
 
 volumes:
   mongo:

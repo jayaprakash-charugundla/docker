@@ -11,14 +11,14 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
       ZOOKEEPER_SYNC_LIMIT: 2
     networks:
-      - lsr
+      - jc
   
   kafka:
     #image: confluentinc/cp-kafka:5.5.1
     image: confluentinc/cp-kafka:6.1.1
     container_name: kafka
     networks:
-      - lsr
+      - jc
     ports:
       - 9092:9092
       - 29092:29092
@@ -30,8 +30,22 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     depends_on:
       - zookeeper
+  
+  kafdrop:
+    image: obsidiandynamics/kafdrop
+    container_name: kafdrop
+    networks:
+      - jc
+    restart: "no"
+    ports:
+      - 9000:9000
+    environment:
+      KAFKA_BROKERCONNECT: "kafka:29092"
+      JVM_OPTS: "-Xms16M -Xmx48M -Xss180K -XX:-TieredCompilation -XX:+UseStringDeduplication -noverify"
+    depends_on:
+      - kafka
 
 networks:
-  lsr:
+  jc:
     external:
-      name: lsr
+      name: jc

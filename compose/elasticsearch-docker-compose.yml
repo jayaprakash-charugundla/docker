@@ -9,9 +9,9 @@ services:
       - 9200:9200
       - 9300:9300
     networks:
-      - lsr
+      - jc
       
 networks:
-  lsr:
+  jc:
     external:
-      name: lsr
+      name: jc

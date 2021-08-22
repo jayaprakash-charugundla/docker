@@ -9,13 +9,13 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
     networks:
-      - lsr
+      - jc
   
   kafka:
     image: confluentinc/cp-enterprise-kafka
     container_name: kafka
     networks:
-      - lsr
+      - jc
     ports:
       - 9092:9092
     environment:
@@ -38,7 +38,7 @@ services:
     image: confluentinc/cp-schema-registry
     container_name: schema-registry
     networks:
-      - lsr
+      - jc
     ports:
       - 8081:8081
     environment:
@@ -53,7 +53,7 @@ services:
     image: confluentinc/cp-ksql-server
     container_name: ksql-server
     networks:
-      - lsr
+      - jc
     ports:
       - 8088:8088
     depends_on:
@@ -68,7 +68,7 @@ services:
     image: confluentinc/cp-enterprise-control-center
     container_name: control-center
     networks:
-      - lsr
+      - jc
     ports:
       - 9021:9021
     depends_on:
@@ -90,6 +90,6 @@ services:
       PORT: 9021
 
 networks:
-  lsr:
+  jc:
     external:
-      name: lsr
+      name: jc

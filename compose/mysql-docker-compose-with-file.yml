@@ -9,11 +9,11 @@ services:
     ports:
       - 3306:3306
     networks:
-      - lsr
+      - jc
     volumes:
-      - /c/Users/1025690/OneDrive/Docker/volume/mysql:/var/lib/mysql
+      - /d/Workspace/Devops/volume/mysql:/var/lib/mysql
 
 networks:
-  lsr:
+  jc:
     external:
-      name: lsr
+      name: jc

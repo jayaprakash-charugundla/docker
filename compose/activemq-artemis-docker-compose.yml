@@ -10,9 +10,9 @@ services:
       - 8161:8161
       - 61616:61616
     networks:
-      - lsr
+      - jc
 
 networks:
-  lsr:
+  jc:
     external:
-      name: lsr
+      name: jc
