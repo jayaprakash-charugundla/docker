@@ -1,12 +1,13 @@
 version: '3'
+
 x-airflow-common:
   &airflow-common
   image: apache/airflow:2.1.1-python3.8
   environment:
     &airflow-common-env
     AIRFLOW__CORE__EXECUTOR: CeleryExecutor
-    AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
-    AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
+    AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres:5432/airflow
+    AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres:5432/airflow
     AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
     AIRFLOW__CORE__FERNET_KEY: ''
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
@@ -26,6 +27,8 @@ services:
   postgres:
     container_name: postgres
     image: postgres:13
+    ports:
+      - "5432:5432"
     environment:
       POSTGRES_USER: airflow
       POSTGRES_PASSWORD: airflow
@@ -66,6 +69,8 @@ services:
       timeout: 10s
       retries: 5
     restart: always
+    environment:
+      <<: *airflow-common-env
     networks:
       - jc
 
@@ -74,6 +79,8 @@ services:
     container_name: airflow-scheduler
     command: scheduler
     restart: always
+    environment:
+      <<: *airflow-common-env
     networks:
       - jc
 
@@ -82,19 +89,23 @@ services:
     container_name: airflow-worker
     command: celery worker
     restart: always
+    environment:
+      <<: *airflow-common-env
     networks:
       - jc
 
   airflow-init:
     <<: *airflow-common
     container_name: airflow-init
-    command: version
+    entrypoint: /bin/bash -c "/bin/bash -c \"$${@}\""
+    command: |
+      /bin/bash -c "
+        airflow db init
+        airflow db upgrade
+        airflow users create -r Admin -u admin -e airflow@airflow.com -f admin -l user -p airflow
+      "
     environment:
       <<: *airflow-common-env
-      _AIRFLOW_DB_UPGRADE: 'true'
-      _AIRFLOW_WWW_USER_CREATE: 'true'
-      _AIRFLOW_WWW_USER_USERNAME: ${_AIRFLOW_WWW_USER_USERNAME:-airflow}
-      _AIRFLOW_WWW_USER_PASSWORD: ${_AIRFLOW_WWW_USER_PASSWORD:-airflow}
     networks:
       - jc
 
