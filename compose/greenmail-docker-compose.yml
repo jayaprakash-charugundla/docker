@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+  greenmail:
+    container_name: greenmail
+    image: 'greenmail/standalone:latest'
+    restart: always
+    ports:
+      - '3025:3025'
+      - '3110:3110'
+      - '3143:3143'
+      - '3993:3993'
+      - '3995:3995'
+    networks:
+      - jc
+
+networks:
+  jc:
+    external:
+      name: jc
