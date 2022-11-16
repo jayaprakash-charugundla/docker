@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  pgadmin:
+    container_name: pgadmin4
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@docker.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
+    networks:
+      - jc
+
+networks:
+  jc:
+    external:
+      name: jc
