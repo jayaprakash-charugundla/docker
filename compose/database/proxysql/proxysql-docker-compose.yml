@@ -1,0 +1,18 @@
+version: "3"
+services:
+  proxysql:
+    container_name: proxysql
+    image: proxysql/proxysql
+    ports:
+      - 6032:6032
+      - 6033:6033
+      - 6070:6070
+    networks:
+      - jc
+    volumes:
+      - /Users/jayaprakash.charugundla/Workspace/Devops/docker/compose/database/proxysql/proxysql.cnf:/etc/proxysql.cnf
+
+networks:
+  jc:
+    name: jc
+    external: true
