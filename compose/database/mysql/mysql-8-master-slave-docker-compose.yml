@@ -18,6 +18,8 @@ services:
       - 3306:3306
     networks:
       - jc
+    volumes:
+      - ./volume/mysql:/var/lib/mysql
 
   mysql-slave-1:
     container_name: mysql-slave-1

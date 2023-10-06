@@ -11,7 +11,7 @@ services:
     networks:
       - jc
     volumes:
-      - /d/Workspace/Devops/volume/mysql:/var/lib/mysql
+      - ./volume/mysql:/var/lib/mysql
 
 networks:
   jc:
